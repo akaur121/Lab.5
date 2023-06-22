@@ -1,0 +1,30 @@
+from poke_api import fetch_pokemon_info
+from pastebin_api import create_pastebin_paste
+
+def create_pokemon_abilities_list_paste(pokemon_name):
+    # Fetch Pokémon information
+    pokemon_info = fetch_pokemon_info(pokemon_name)
+
+    if pokemon_info:
+        # Get the abilities list from Pokémon information
+        abilities = [ability['ability']['name'] for ability in pokemon_info['abilities']]
+
+        # Create the dash-separated abilities string
+        abilities_string = ' - '.join(abilities)
+
+        # Create a title for the paste
+        paste_title = f"{pokemon_info['name']} Abilities"
+
+        # Create the paste with the abilities list
+        paste_url = create_pastebin_paste(paste_title, abilities_string, "N", True)
+
+        if paste_url:
+            print("Paste created successfully. URL:", paste_url)
+        else:
+            print("Failed to create PasteBin paste.")
+    else:
+        print("Failed to fetch Pokémon information.")
+
+# Example usage
+pokemon_name = "pikachu"
+create_pokemon_abilities_list_paste(pokemon_name)
